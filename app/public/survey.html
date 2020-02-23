@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Survey</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" crossorigin="anonymous">
+</head>
+<body>
+
+    <div id = "show_match" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your best match place to have fun tonight</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="match"></p>
+                    <p id="description"></p>
+                    <p>Parking nearby</p>
+                    <iframe src="" width="600" height="450" frameborder="0" style="border:0" allowfullscreen id="map"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  >
+        <h1 style="text-align:center; font-size:50px;">What's Poppin Milwaukee!</h1>
+        Name <input type="text" id="name" class="form-control" required>
+        <br>
+        Email <input type="text" id="email" class="form-control" required>
+        <br>
+        Zip Code <input type="text" id="zip" class="form-control" required>
+        <br>
+        Age <input type="text" id="age" class="form-control" required>
+        <br>
+        <br><br>
+    </div>
+    <div class="container">
+        <h2>Here's some choices. Choose what fits you better.</h2>
+        <br>
+        <div class="questionBlock">
+            <p><strong>What type of alcoholic specialty do you like?</strong></p>
+            <input type="radio" name="question1" value="1">Liquor
+            <input type="radio" name="question1" value="2">Beer
+            <input type="radio" name="question1" value="3">Wine
+            <input type="radio" name="question1" value="4">No alcohol
+            <input type="radio" name="question1" value="5">other
+        </div>
+        <br>
+        <div class="questionBlock">
+            <p><strong>What type of music?</strong></p>
+            <input type="radio" name="question2" value="1">Latin
+            <input type="radio" name="question2" value="2">Country
+            <input type="radio" name="question2" value="3">Electronic
+            <input type="radio" name="question2" value="4">Rap
+            <input type="radio" name="question2" value="5">Rock
+            <input type="radio" name="question2" value="6">Reggae
+            <input type="radio" name="question2" value="7">Jazz
+        </div>
+        <br>
+        <div class="questionBlock">
+            <p><strong>What kind of venue do you like?</strong></p>
+            <input type="radio" name="question3" value="1">Nightclubs
+            <input type="radio" name="question3" value="2">Bars
+            <input type="radio" name="question3" value="3">Breweries
+            <input type="radio" name="question3" value="4">Classical art venues
+        </div>
+        <br>
+        <button id="done">Gimme results already.</button>
+        <br>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" ></script>
+    <script>
+        $(document).ready(function() {
+            $("#done").on("click", function(event) {
+                event.preventDefault()
+                var scores = [
+                            $("input:radio[name=question1]:checked").val(),
+                            $("input:radio[name=question2]:checked").val(),
+                            $("input:radio[name=question3]:checked").val()
+                        ].map(Number)
+                function checkButtons(){
+                   if(scores.some(isNaN)){
+                    return false
+                   }
+                   return true
+                }
+
+                if($("#name").val().match(/^[0-9a-zA-Z]+$/) && checkButtons()){
+                    var User = {
+                        name: $("#name").val().trim(),
+                        scores: scores
+                    }
+                    var maplink="https://www.google.com/maps/embed/v1/search?q=parking+"+$("#zip").val().trim()+"&key=AIzaSyDa199bTcTQixI4pZTy0EYup8vv_C55lhs"
+                    console.log(maplink)
+                    $.post("api/bars", User, function(data){
+                        $("#match").text(data.name);
+                        $("#description").text(data.description)
+                        $("#map").attr("src", maplink)
+                        $("#show_match").modal("show")
+                    })
+                }
+                else{
+                    alert("Something is incomplete. Name should be letters or/and numbers. All the questions have to be answered.")
+                }
+            })
+        })
+    
+    </script>
+</body>
+</html>
