@@ -21,8 +21,8 @@
                 <div class="modal-body">
                     <p id="match"></p>
                     <p id="description"></p>
-                    <p>Parking nearby</p>
-                    <iframe src="" width="600" height="450" frameborder="0" style="border:0" allowfullscreen id="map"></iframe>
+                    <p>Parking nearby:</p>
+                    <iframe src="" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen id="map"></iframe>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -30,16 +30,11 @@
             </div>
         </div>
     </div>
-    <div  >
+    <div class="container">
         <h1 style="text-align:center; font-size:50px;">What's Poppin Milwaukee!</h1>
-        Name <input type="text" id="name" class="form-control" required>
-        <br>
-        Email <input type="text" id="email" class="form-control" required>
-        <br>
         Zip Code <input type="text" id="zip" class="form-control" required>
         <br>
         Age <input type="text" id="age" class="form-control" required>
-        <br>
         <br><br>
     </div>
     <div class="container">
@@ -74,7 +69,7 @@
         </div>
         <br>
         <button id="done">Gimme results already.</button>
-        <br>
+        <br><br><br>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" ></script>
@@ -94,9 +89,8 @@
                    return true
                 }
 
-                if($("#name").val().match(/^[0-9a-zA-Z]+$/) && checkButtons()){
+                if($("#zip").val().match(/^[0-9a-zA-Z]+$/) && checkButtons()){
                     var User = {
-                        name: $("#name").val().trim(),
                         scores: scores
                     }
                     var maplink="https://www.google.com/maps/embed/v1/search?q=parking+"+$("#zip").val().trim()+"&key=AIzaSyDa199bTcTQixI4pZTy0EYup8vv_C55lhs"
